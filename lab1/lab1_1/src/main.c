@@ -99,7 +99,7 @@ int main(void)
 {
     testAnimals();
 
-    Animal* cat;
+    Animal *cat;
     cat = createCat("Cat");
     animalPrintGreeting(cat);
 
