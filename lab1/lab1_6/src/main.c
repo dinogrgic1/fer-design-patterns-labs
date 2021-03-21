@@ -73,7 +73,7 @@ Animal **createDogs(int n)
     Animal **obj = malloc(n * sizeof(Animal));
     for(int i = 0; i < n; i++)
     {
-        obj[i] = createDog("Dog");
+        obj[i] = createDog("dog");
     }
     return obj;
 }

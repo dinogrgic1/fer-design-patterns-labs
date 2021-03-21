@@ -1,113 +1,99 @@
-#include <stdlib.h>
 #include <stdio.h>
 
 typedef char const *(*PTRFUN)();
 
-typedef struct Animal
+typedef struct Unary_Function_Vtable
 {
-    char const *name;
-    PTRFUN *pfun;
-} Animal;
+    double *(*value_at);
+    double *(*negative_valute_at);
+    void *(*tabulate);
+} Unary_Function_Vtable;
 
-char const *dogGreet(void)
+typedef struct Square_Function_Vtable
 {
-    return "vau!";
+    double *(*value_at);
+    double *(*negative_valute_at);
+    void *(*tabulate);
+} Square_Function_Vtable;
+
+typedef struct Linear_Function_Vtable
+{
+    double *(*value_at);
+    double *(*negative_valute_at);
+    void *(*tabulate);
+} Linear_Function_Vtable;
+
+Unary_Function_Vtable* ufVtable = {unary_function_value_at, unary_function_negative_value_at, unary_function_tabulate};
+Square_Function_Vtable* squareVtable = {};
+Linear_Function_Vtable* linearVtable = {};
+
+typedef struct Unary_Function
+{
+    PTRFUN* v_table;
+    int lower_bound;
+    int upper_bound;
+} Unary_Function;
+
+typedef struct Square
+{
+    PTRFUN* v_table;
+    int lower_bound;
+    int upper_bound;
+} Square;
+
+typedef struct Linear
+{
+    PTRFUN* v_table;
+    int lower_bound;
+    int upper_bound;
+    int a;
+    int b;
+};
+
+Unary_Function* make(int lb, int ub)
+{
+    Unary_Function* tmp;
+    tmp->lower_bound = lb;
+    tmp->upper_bound = ub;
+    return tmp;
 }
 
-char const *dogMenu(void)
+double unary_function_value_at(double x)
 {
-    return "kuhanu govedinu";
+    return 0;
 }
 
-char const *catGreet(void)
+double unary_function_negative_value_at(double x)
 {
-    return "mijau!";
+    return -value_at(x);
 }
 
-char const *catMenu(void)
+void unary_function_tabulate(const Unary_Function* uf)
 {
-    return "konzerviranu tunjevinu";
-}
-
-PTRFUN vtableDog[2] = {dogGreet, dogMenu};
-PTRFUN vtableCat[2] = {catGreet, catMenu};
-
-Animal *constructDog(Animal *obj, const char *name)
-{
-    obj->name = name;
-    obj->pfun = vtableDog;
-    return obj;
-}
-
-Animal *constructCat(Animal *obj, const char *name)
-{
-    obj->name = name;
-    obj->pfun = vtableCat;
-    return obj;
-}
-
-Animal *createDog(const char *name)
-{   
-    Animal *obj = (Animal *)malloc(sizeof(Animal));
-    return constructDog(obj, name);
-}
-
-Animal *createCat(const char *name)
-{
-    Animal *obj = malloc(sizeof(Animal));
-    return constructCat(obj, name);
-}
-
-void animalPrintGreeting(Animal *obj)
-{
-    printf("%s pozdravlja: %s\n", obj->name, obj->pfun[0]());
-}
-
-void animalPrintMenu(Animal *obj)
-{
-    printf("%s voli %s\n", obj->name, obj->pfun[1]());
-}
-
-Animal **createDogs(int n)
-{
-    Animal **obj = malloc(n * sizeof(Animal));
-    for(int i = 0; i < n; i++)
+    for (int x = uf->lower_bound; x <= uf->upper_bound; x++)
     {
-        obj[i] = createDog("dog");
+        printf("f(%d)=%lf\n", x, uf->value_at(x));
     }
-    return obj;
 }
 
-void testAnimals(void)
+// static
+_Bool same_functions_for_ints( Unary_Function *f1, Unary_Function *f2, double tolerance)
 {
-    Animal *p1 = createDog("Hamlet");
-    Animal *p2 = createCat("Ofelija");
-    Animal *p3 = createDog("Polonije");
-
-    animalPrintGreeting(p1);
-    animalPrintGreeting(p2);
-    animalPrintGreeting(p3);
-
-    animalPrintMenu(p1);
-    animalPrintMenu(p2);
-    animalPrintMenu(p3);
-
-    free(p1);   free(p2);   free(p3);
+    if (f1->lower_bound != f2->lower_bound)
+        return 0;
+    if (f1->upper_bound != f2->upper_bound)
+        return 0;
+    for (int x = f1->lower_bound; x <= f1->upper_bound; x++)
+    {
+        double delta = f1->value_at(x) - f2->value_at(x);
+        if (delta < 0)
+            delta = -delta;
+        if (delta > tolerance)
+            return 0;
+    }
+    return 1;
 }
 
 int main(void)
 {
-    testAnimals();
-
-    Animal* cat;
-    cat = createCat("Cat");
-    animalPrintGreeting(cat);
-
-    Animal **dogs = createDogs(10);
-    for(int i = 0; i < 10; i++)
-    {
-        animalPrintGreeting(dogs[i]);
-        free(dogs[i]);
-    }
-    free(dogs);
 }
