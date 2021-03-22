@@ -16,7 +16,6 @@ typedef struct Unary_Function
     int upper_bound;
 } Unary_Function;
 
-
 double unary_function_value_at(Unary_Function *uf, double x)
 {
     return 0;
@@ -24,7 +23,7 @@ double unary_function_value_at(Unary_Function *uf, double x)
 
 double unary_function_negative_value_at(Unary_Function *uf, double x)
 {
-    return -unary_function_value_at(uf, x);
+    return (uf->v_table)->value_at(uf, (double)x);
 }
 
 void unary_function_tabulate(const Unary_Function* uf)
@@ -94,10 +93,10 @@ typedef struct Linear
 
 double linear_value_at(Linear *l, double x)
 {
-    return l->a * x + l->b;
+    return (l->a * x) + l->b;
 }
 
-Linear_Vtable linearVtable = { linear_value_at, unary_function_value_at, unary_function_tabulate };
+Linear_Vtable linearVtable = { linear_value_at, unary_function_negative_value_at, unary_function_tabulate };
 Linear *linear_constructor(int lb, int ub, double a_coef, double b_coef)
 {
     Linear *tmp = (Linear*) malloc(sizeof(Linear));
@@ -118,7 +117,7 @@ _Bool same_functions_for_ints(Unary_Function *f1, Unary_Function *f2, double tol
  
     for (int x = f1->lower_bound; x <= f1->upper_bound; x++)
     {
-        double delta = (f1->v_table)->value_at(x) - (f2->v_table)->value_at(x);   
+        double delta = (f1->v_table)->value_at(f1, x) - (f2->v_table)->value_at(f2, x);   
         if (delta < 0)
             delta = -delta;
         if (delta > tolerance)
@@ -133,7 +132,8 @@ int main(void)
     (f1->v_table)->tabulate();
     Linear *f2 = linear_constructor(-2, 2, 5, -2);
     (f2->v_table)->tabulate();
-    //printf("f1==f2: %s\n", same_functions_for_ints((Unary_Function*) f1, (Unary_Function*) f2, 1E-6) ? "DA" : "NE");
-    printf("neg_val f2(1) = %lf\n", (f2->v_table)->negative_value_at(1.0));
+    printf("f1==f2: %s\n", same_functions_for_ints((Unary_Function*) f1, (Unary_Function*) f2, 1E-6) ? "DA" : "NE");
+    printf("neg_val f2(1) = %lf\n", (f2->v_table)->negative_value_at(f2, 1.0));
+    free(f1);   free(f2);
     return 0;
 }
