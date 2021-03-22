@@ -1,0 +1,73 @@
+Inicijaliziranje 4 bytea na stacku za objekt poc i 16 byteova na gomili za *pb. 
+_Znwm je funkcija koja poziva operator new.
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	push	rbx
+	sub	rsp, 40
+	.cfi_offset 3, -24
+	mov	rax, QWORD PTR fs:40
+	mov	QWORD PTR -24[rbp], rax
+	xor	eax, eax
+	mov	edi, 16
+	call	_Znwm@PLT
+	mov	rbx, rax
+	mov	rdi, rbx
+	call	CoolClass::CoolClass()
+
+Konstruktor za poc ne postoji samo se zauzima 4 bytea memorije
+za poc objekt na stacku.
+    push	rbx
+
+Konstruktor za objekt *pb poziva se. Nakon poziva operatora new
+poziva se funkcija za inicijalizaciju CoolClass().
+    call	_Znwm@PLT
+	mov	rbx, rax
+	mov	rdi, rbx
+	call	CoolClass::CoolClass()
+
+Pozivi set za različite objekte. 
+Za objekt poc konstanta 42 se stavlja na stog i poziva se PlainOldCLass:set()
+    mov	QWORD PTR -32[rbp], rbx
+	lea	rax, -36[rbp]
+	mov	esi, 42
+	mov	rdi, rax
+    call	PlainOldClass::set(int)
+
+Za objekt *pb uzima se varijabla pb sa stoga referencira se
+te se set uzima iz virtualne tablice i poziva se 
+sa vrjednoscu 42 na stogu.
+    mov	rax, QWORD PTR -32[rbp]
+	mov	rax, QWORD PTR [rax]
+	mov	rdx, QWORD PTR [rax]
+	mov	rax, QWORD PTR -32[rbp]
+	mov	esi, 42
+	mov	rdi, rax
+	call	rdx
+	mov	eax, 0
+	mov	rcx, QWORD PTR -24[rbp]
+	sub	rcx, QWORD PTR fs:40
+	je	.L9
+
+Inicijaliacija tablice virtualnih funkcija za CoolClass.
+Možemo primjetiti i nadopunjavanje stukture.
+    mov	rax, QWORD PTR -8[rbp]
+	mov	rdi, rax
+	call	Base::Base()
+	lea	rdx, vtable for CoolClass[rip 16]
+	mov	rax, QWORD PTR -8[rbp]
+	mov	QWORD PTR [rax], rdx
+    ...
+    vtable for CoolClass:
+	.quad	0
+	.quad	typeinfo for CoolClass
+	.quad	CoolClass::set(int)
+	.quad	CoolClass::get()
+	.weak	vtable for Base
+	.section	.data.rel.ro.vtable for Base,"awG",@progbits,vtable for Base,comdat
+	.align 8
+	.type	vtable for Base, @object
+	.size	vtable for Base, 32

@@ -27,7 +27,7 @@ private:
     int x_;
 };
 
-int main(int argc, char *argv[])
+int main()
 {
     PlainOldClass poc;
     Base *pb = new CoolClass;

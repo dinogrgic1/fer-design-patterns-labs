@@ -6,7 +6,6 @@ typedef struct Unary_Function_Vtable
 {
     double (*value_at)();
     double (*negative_value_at)();
-    void (*tabulate)();
 } Unary_Function_Vtable;
 
 typedef struct Unary_Function
@@ -33,7 +32,7 @@ void unary_function_tabulate(const Unary_Function* uf)
         printf("f(%d)=%lf\n", x, (uf->v_table)->value_at(uf, (double)x));
     }
 }
-Unary_Function_Vtable ufVtable = { unary_function_value_at, unary_function_negative_value_at, unary_function_tabulate };
+Unary_Function_Vtable ufVtable = { unary_function_value_at, unary_function_negative_value_at };
 void unary_function_constructor(Unary_Function *uf, int lb, int ub)
 {
     uf->v_table = &ufVtable;
@@ -48,7 +47,6 @@ typedef struct Square_Vtable
 {
     double (*value_at)();
     double (*negative_value_at)();
-    void (*tabulate)();
 } Square_Vtable;
 
 typedef struct Square
@@ -63,7 +61,7 @@ double square_value_at(double x)
     return x * x;
 }
 
-Square_Vtable squareVtable = { square_value_at, unary_function_negative_value_at, unary_function_tabulate };
+Square_Vtable squareVtable = { square_value_at, unary_function_negative_value_at };
 Square* square_constructor(int lb, int ub)
 {
     Square *tmp = (Square*) malloc(sizeof(Square));
@@ -79,7 +77,6 @@ typedef struct Linear_Vtable
 {
     double (*value_at)();
     double (*negative_value_at)();
-    void (*tabulate)();
 } Linear_Vtable;
 
 typedef struct Linear
@@ -96,7 +93,7 @@ double linear_value_at(Linear *l, double x)
     return (l->a * x) + l->b;
 }
 
-Linear_Vtable linearVtable = { linear_value_at, unary_function_negative_value_at, unary_function_tabulate };
+Linear_Vtable linearVtable = { linear_value_at, unary_function_negative_value_at };
 Linear *linear_constructor(int lb, int ub, double a_coef, double b_coef)
 {
     Linear *tmp = (Linear*) malloc(sizeof(Linear));
@@ -129,9 +126,9 @@ _Bool same_functions_for_ints(Unary_Function *f1, Unary_Function *f2, double tol
 int main(void)
 {
     Square *f1 = square_constructor(-2, 2);
-    (f1->v_table)->tabulate();
+    unary_function_tabulate((Unary_Function*) f1);
     Linear *f2 = linear_constructor(-2, 2, 5, -2);
-    (f2->v_table)->tabulate();
+    unary_function_tabulate((Unary_Function*) f2);
     printf("f1==f2: %s\n", same_functions_for_ints((Unary_Function*) f1, (Unary_Function*) f2, 1E-6) ? "DA" : "NE");
     printf("neg_val f2(1) = %lf\n", (f2->v_table)->negative_value_at(f2, 1.0));
     free(f1);   free(f2);

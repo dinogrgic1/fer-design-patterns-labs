@@ -1,0 +1,64 @@
+Prilikom poziva new Derived poziva se konstruktor od Derived.
+.LEHB0:
+	call	_Znwm@PLT
+.LEHE0:
+	mov	rbx, rax
+	mov	rdi, rbx
+.LEHB1:
+	call	Derived::Derived()
+_Znwm je new poziv a onda se zauzima 8 byteova za klasu i poziva se Derived:Derived()
+
+Zbog toga što je bazna klasa od Derived Base zove se prvo njezin konstruktor.
+	mov	rdi, rax
+	call	Base::Base()
+	lea	rdx, vtable for Derived[rip 16]
+Zove Base::Base() i popunjava se talbica virtualnih funkcija.
+
+Poziva se Base::metoda() koja poziva virualnu metodu u baznoj klasi.
+	mov	QWORD PTR [rax], rdx
+	mov	rax, QWORD PTR -8[rbp]
+	mov	rdi, rax
+	call	Base::metoda()
+Ispisuje se: Metoda kaze: ja sam bazna implementacija!
+
+Nastavlja se izvedba u Derived konstruktoru.
+Poziva se Base::metoda() koja sada poziva virtualnu metodu u izvedenoj klasi.
+.LEHB2:
+	call	Base::metoda()
+	mov	eax, 0
+	jmp	.L10
+.L9:
+...
+Base::metoda():
+.LFB4:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	sub	rsp, 16
+	mov	QWORD PTR -8[rbp], rdi
+	lea	rdi, .LC1[rip]
+	mov	eax, 0
+	call	printf@PLT
+	mov	rax, QWORD PTR -8[rbp]
+	mov	rax, QWORD PTR [rax]
+	mov	rdx, QWORD PTR [rax]
+	mov	rax, QWORD PTR -8[rbp]
+	mov	rdi, rax
+	call	rdx
+Ovaj zadnji call u Base::metoda gleda tablicu virtualnih funkcija i poziva
+odgovarajuću funkciju za objekt odgovarajućeg tipa
+Ispisuje se: Metoda kaze: ja sam izvedena implementacija!
+
+Sada imamo inicijalizirani objekt.
+Pozivamo na objekt Base:metoda() iz bazne klase
+.LEHB2:
+	call	Base::metoda()
+	mov	eax, 0
+	jmp	.L10
+
+Opet se poziva virtualna metodu iz izvedene klase jer je objekt tipa klase Derived.
+Isto kao i u prošlom primjeru zbog toga što Base::metoda() gleda tablicu virtualnih funkcija.
+Ispisuje se: Metoda kaze: ja sam izvedena implementacija!
