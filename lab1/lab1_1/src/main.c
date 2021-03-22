@@ -1,14 +1,30 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define ANIMAL_GREET 0
+#define ANIMAL_MENU 1
+
 typedef char const *(*PTRFUN)();
 
+#pragma region Animal
 typedef struct Animal
 {
     char const *name;
     PTRFUN *pfun;
 } Animal;
 
+void animalPrintGreeting(Animal *obj)
+{
+    printf("%s pozdravlja: %s\n", obj->name, obj->pfun[ANIMAL_GREET]());
+}
+
+void animalPrintMenu(Animal *obj)
+{
+    printf("%s voli %s\n", obj->name, obj->pfun[ANIMAL_MENU]());
+}
+#pragma endregion Animal
+
+#pragma region Dog
 char const *dogGreet(void)
 {
     return "vau!";
@@ -19,19 +35,7 @@ char const *dogMenu(void)
     return "kuhanu govedinu";
 }
 
-char const *catGreet(void)
-{
-    return "mijau!";
-}
-
-char const *catMenu(void)
-{
-    return "konzerviranu tunjevinu";
-}
-
 PTRFUN vtableDog[2] = {dogGreet, dogMenu};
-PTRFUN vtableCat[2] = {catGreet, catMenu};
-
 Animal *constructDog(Animal *obj, const char *name)
 {
     obj->name = name;
@@ -39,33 +43,10 @@ Animal *constructDog(Animal *obj, const char *name)
     return obj;
 }
 
-Animal *constructCat(Animal *obj, const char *name)
-{
-    obj->name = name;
-    obj->pfun = vtableCat;
-    return obj;
-}
-
 Animal *createDog(const char *name)
 {   
     Animal *obj = (Animal *)malloc(sizeof(Animal));
     return constructDog(obj, name);
-}
-
-Animal *createCat(const char *name)
-{
-    Animal *obj = malloc(sizeof(Animal));
-    return constructCat(obj, name);
-}
-
-void animalPrintGreeting(Animal *obj)
-{
-    printf("%s pozdravlja: %s\n", obj->name, obj->pfun[0]());
-}
-
-void animalPrintMenu(Animal *obj)
-{
-    printf("%s voli %s\n", obj->name, obj->pfun[1]());
 }
 
 Animal **createDogs(int n)
@@ -77,6 +58,33 @@ Animal **createDogs(int n)
     }
     return obj;
 }
+#pragma endregion Dog
+
+#pragma region Cat
+char const *catGreet(void)
+{
+    return "mijau!";
+}
+
+char const *catMenu(void)
+{
+    return "konzerviranu tunjevinu";
+}
+
+PTRFUN vtableCat[2] = {catGreet, catMenu};
+Animal *constructCat(Animal *obj, const char *name)
+{
+    obj->name = name;
+    obj->pfun = vtableCat;
+    return obj;
+}
+
+Animal *createCat(const char *name)
+{
+    Animal *obj = (Animal *)malloc(sizeof(Animal));
+    return constructCat(obj, name);
+}
+#pragma endregion Cat
 
 void testAnimals(void)
 {

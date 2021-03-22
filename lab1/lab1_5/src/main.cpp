@@ -16,8 +16,6 @@ public:
 
 void printVtable(B *pb)
 {
-  //int *vTable = *(int**)pb;
-  //int *vTable = ((int**) pb)[0];
   using fun_ptr = int(*)(B*);
   using fun_ptr2 = int(*)(B*, int);
 
