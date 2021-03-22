@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.0)
 project(lab1_4)
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 -save-temps")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -save-temps")
     if(NOT WIN32)
         set(GLAD_LIBRARIES dl)
     endif()
@@ -14,7 +14,7 @@ include_directories(include/)
 
 file(GLOB PROJECT_HEADERS include/*.hpp
                           include/*.h)
-file(GLOB PROJECT_SOURCES src/*.c)
+file(GLOB PROJECT_SOURCES src/*.cpp)
 
 source_group("headers" FILES ${PROJECT_HEADERS})
 source_group("src" FILES ${PROJECT_SOURCES})

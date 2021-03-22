@@ -14,7 +14,7 @@ include_directories(include/)
 
 file(GLOB PROJECT_HEADERS include/*.hpp
                           include/*.h)
-file(GLOB PROJECT_SOURCES src/*.c)
+file(GLOB PROJECT_SOURCES src/*.cpp)
 
 source_group("headers" FILES ${PROJECT_HEADERS})
 source_group("src" FILES ${PROJECT_SOURCES})
