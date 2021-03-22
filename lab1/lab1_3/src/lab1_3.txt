@@ -1,0 +1,10 @@
+Prilikom stvaranje prazne strukture C-u ona sadrži 1 byte.
+Struktura sa jednom virtualnom funkcijom sadrži 8 byteova na 64 bitnoj arhitekturi i 4 bytea na 32 bitnoj arhitekturi.
+    Veličina void pointera na 64 bitnoj arhitekturi jer 8 byteova. Na 32 bitnoj arhitekturi je 4 bytea.
+Dodavanjem više od jedne virtualne funkcije ne povećava se veličina strukture.
+Nevirtualne funkcije ne zauzimaju mjesto u strukturi.
+U mojem slučaju koristim linux 64 bitni operacijski sustav u kojem g++ kompajler popunjava stukturu sa paddingom.
+Najčešće se struktura popunjava tako da njena veličina bude djeljiva sa potencijom broja 2. 
+
+CoolClass size: 16 bytes (8 byteova zbog virtualne funkcije + 4 byte zbog inta --> popunjavanje na 16 byteova)
+PlainOldClass size: 4 bytes (4 bytea zbog inta)
