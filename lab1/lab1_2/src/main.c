@@ -17,14 +17,14 @@ typedef struct Unary_Function
 } Unary_Function;
 
 
-double unary_function_value_at(double x)
+double unary_function_value_at(Unary_Function *uf, double x)
 {
     return 0;
 }
 
-double unary_function_negative_value_at(double x)
+double unary_function_negative_value_at(Unary_Function *uf, double x)
 {
-    return -unary_function_value_at(x);
+    return -unary_function_value_at(uf, x);
 }
 
 void unary_function_tabulate(const Unary_Function* uf)
