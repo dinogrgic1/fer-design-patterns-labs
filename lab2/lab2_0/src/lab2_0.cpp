@@ -1,6 +1,4 @@
 #include <iostream>
-#include <assert.h>
-#include <stdlib.h>
 #include <list>
 
 struct Point
@@ -36,8 +34,7 @@ private:
 public:
     virtual void draw()
     {
-        std::cerr << "in circle\n";
-        std::cout << "(x:" << this->getX() << ",y:" << this->getY() << ")" << std::endl;
+        std::cout << "in circle (x:" << this->getX() << ",y:" << this->getY() << ")" << std::endl;
     }
 };
 
@@ -48,8 +45,7 @@ private:
 public:
     virtual void draw()
     {
-        std::cerr << "in square\n";
-        std::cout << "(x:" << this->getX() << ",y:" << this->getY() << ")" << std::endl;
+        std::cout << "in square (x:" << this->getX() << ",y:" << this->getY() << ")" << std::endl;
     }
 };
 
@@ -60,31 +56,30 @@ private:
 public:
     virtual void draw()
     {
-        std::cerr << "in rhomb\n";
-        std::cout << "(x:" << this->getX() << ",y:" << this->getY() << ")" << std::endl;
+        std::cout << "in rhomb (x:" << this->getX() << ",y:" << this->getY() << ")" << std::endl;
     }
 };
 
-void drawShapes(const std::list<Shape*>& shapes)
+void drawShapes(const std::list<Shape *> &shapes)
 {
-    std::list<Shape*>::const_iterator it;
-    for(it = shapes.begin(); it != shapes.end(); ++it)
+    std::list<Shape *>::const_iterator it;
+    for (it = shapes.begin(); it != shapes.end(); ++it)
     {
         (*it)->draw();
     }
 }
-void moveShapes(std::list<Shape*>& shapes, int x, int y)
+void moveShapes(std::list<Shape *> &shapes, int x, int y)
 {
-    std::list<Shape*>::const_iterator it;
-    for(it = shapes.begin(); it != shapes.end(); ++it)
+    std::list<Shape *>::const_iterator it;
+    for (it = shapes.begin(); it != shapes.end(); ++it)
     {
         (*it)->move(x, y);
     }
-}      
+}
 int main()
 {
-    std::list<Shape*> shapes = std::list<Shape*>();
-    
+    std::list<Shape *> shapes = std::list<Shape *>();
+
     shapes.push_back((Shape *)new Circle);
     shapes.push_back((Shape *)new Square);
     shapes.push_back((Shape *)new Square);
