@@ -173,7 +173,7 @@ public:
         if (this->p_ > 100 * (len - 0.5) / len)
             return number[len - 1];
 
-        for (int i = 0; i < len; i++)
+        for (int i = 1; i < len; i++)
         {
             double p_v_i = 100 * (i + 1 - 0.5) / len;
             double p_v_i_1 = 100 * (i + 1 + 1 - 0.5) / len;
