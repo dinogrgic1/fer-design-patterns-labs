@@ -1,17 +1,9 @@
-#include <iostream>
 #include <vector>
-#include <fstream>
-#include <chrono>
 #include <thread>
+#include <chrono>
 
+#include "Izvor.hpp"
 #include "Observer.hpp"
-#include "ObserverLog.hpp"
-
-class Izvor
-{
-public:
-    virtual int read() = 0;
-};
 
 class SlijedBrojeva
 {
@@ -62,42 +54,3 @@ public:
         }
     }
 };
-
-
-class TipkovnickiIzvor : public Izvor
-{
-public:
-    virtual int read()
-    {
-        std::string s;
-        std::cin >> s;
-        return stoi(s);
-    }
-};
-
-class DatotecniIzvor : public Izvor
-{
-private:
-    std::ifstream file_;
-public:
-    ~DatotecniIzvor() 
-    {
-        file_.close();
-    }
-    DatotecniIzvor(std::string filepath) : file_(filepath) { }
-    virtual int read()
-    {
-        std::string s;
-        file_ >> s;
-        return stoi(s);
-    }
-};
-
-int main(void)
-{
-    SlijedBrojeva *sb = new SlijedBrojeva(new TipkovnickiIzvor());
-    ObserverLog *ob = new ObserverLog("log.txt");
-    
-    sb->attach(ob);
-    sb->kreni();
-}
