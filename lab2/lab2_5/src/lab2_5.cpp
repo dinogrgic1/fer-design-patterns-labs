@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 class Izvor
 {
@@ -17,11 +19,17 @@ public:
     SlijedBrojeva(Izvor *izvor) : izvor_(izvor) {}
     void kreni() 
     {
-        int r = this->izvor_->read();
-        while(r != -1)
+        int r = 0;
+        for(;;)
         {
-            this->nums_.push_back(r);
             r = this->izvor_->read();
+
+            if(r == -1)
+                break;
+
+            this->nums_.push_back(r);
+            // observer notify
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
 };
