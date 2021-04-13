@@ -1,3 +1,4 @@
+#include "SlijedBrojeva.hpp"
 #include "ObserverLog.hpp"
 
 ObserverLog::ObserverLog(std::string filepath)
@@ -5,7 +6,7 @@ ObserverLog::ObserverLog(std::string filepath)
     this->file_.open(filepath);
 }
 
-void ObserverLog::update()
+void ObserverLog::update(std::vector<int> nums)
 {
-    file_ << std::endl;
+    file_ << nums[nums.size() - 1] << std::endl;
 }

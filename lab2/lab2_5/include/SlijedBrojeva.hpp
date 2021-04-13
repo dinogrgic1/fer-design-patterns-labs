@@ -2,55 +2,26 @@
 #include <thread>
 #include <chrono>
 
-#include "Izvor.hpp"
+#ifndef SLIJED_BROJEVA_HPP
+#define SLIJED_BROJEVA_HPP
+
 #include "Observer.hpp"
+#include "Izvor.hpp"
 
 class SlijedBrojeva
 {
 private:
-    Izvor* izvor_;
+    Izvor *izvor_;
     std::vector<Observer *> observers_;
+
 public:
     std::vector<int> nums;
     SlijedBrojeva(Izvor *izvor) : izvor_(izvor) {}
-    void kreni() 
-    {
-        int r = 0;
-        for(;;)
-        {
-            r = this->izvor_->read();
+    void kreni();
 
-            if(r == -1)
-                break;
-
-            this->nums.push_back(r);
-            notify();
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
-    }
-
-    void attach(Observer *obs)
-    {
-        observers_.push_back(obs);
-    }
-
-    void notify()
-    {
-        for(int i = 0; i < observers_.size(); i++)
-        {
-            observers_[i]->update();
-        }
-    }
-
-    void dettach(Observer *obs)
-    {
-        for(int i = 0; i < observers_.size(); i++)
-        {
-            if(observers_[i] == obs)
-            {
-                observers_.erase(observers_.begin() + i);
-                break;
-            }
-        }
-    }
+    void attach(Observer *obs);
+    void notify();
+    void dettach(Observer *obs);
 };
+
+#endif

@@ -1,11 +1,11 @@
 #ifndef OBSERVER_HPP
 #define OBSERVER_HPP
 
+#include <vector>
+
 class Observer
 {
 public:
-    Observer();
-    virtual void update() = 0;
+    virtual void update(std::vector<int>) = 0;
 };
-
 #endif
