@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(lab2_6)
+project(lab3_1_3)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
@@ -12,16 +12,14 @@ endif()
 
 include_directories(include/)
 
-file(GLOB PROJECT_HEADERS include/*.hpp
-                          include/*.h)
-file(GLOB PROJECT_SOURCES src/*.cpp)
+file(GLOB PROJECT_HEADERS include/*.h)
+file(GLOB PROJECT_SOURCES src/*.c)
 
 source_group("headers" FILES ${PROJECT_HEADERS})
 source_group("src" FILES ${PROJECT_SOURCES})
 
 add_definitions(-DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS})
-
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})					  
+					  
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})

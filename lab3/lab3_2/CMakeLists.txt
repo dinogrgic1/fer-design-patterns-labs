@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(lab3)
+project(lab3_2)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
@@ -12,9 +12,8 @@ endif()
 
 include_directories(include/)
 
-file(GLOB PROJECT_HEADERS include/*.hpp
-                          include/*.h)
-file(GLOB PROJECT_SOURCES src/*.cpp)
+file(GLOB PROJECT_HEADERS include/*.h)
+file(GLOB PROJECT_SOURCES src/*.c)
 
 source_group("headers" FILES ${PROJECT_HEADERS})
 source_group("src" FILES ${PROJECT_SOURCES})
