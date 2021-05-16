@@ -10,6 +10,7 @@ public class TextEditorModel {
 
     private CursorObserver observer;
     private TextObserver txtObserver;
+    private ClipboardStack clipboardStack;
 
     private Location cursorLocation;
 
@@ -62,7 +63,8 @@ public class TextEditorModel {
 
     void moveCursorRight() {
         Location l = cursorLocation;
-        l.x++;
+        if (l.x != lines.get(l.y).length())
+            l.x++;
         observer.updateCursorLocation();
     }
 
@@ -76,8 +78,10 @@ public class TextEditorModel {
 
     void moveCursorDown() {
         Location l = cursorLocation;
-        l.y++;
-        l.x = 0;
+        if(l.y != lines.size() - 1) {
+            l.y++;
+            l.x = 0;
+        }
         observer.updateCursorLocation();
     }
 
@@ -212,4 +216,37 @@ public class TextEditorModel {
         this.txtObserver.updateText();
     }
 
+
+    // clipboard
+
+    public void setClipboardStack(ClipboardStack observer) {
+        if (this.clipboardStack == null) {
+            this.clipboardStack = observer;
+        }
+    }
+
+    public void removeClipboardStack() {
+        this.clipboardStack = null;
+    }
+
+    public ClipboardStack getClipboardStack() {
+        return clipboardStack;
+    }
+
+    public String getClipboardString(LocationRange r) {
+        System.out.println(r);
+        if (r.start.y == r.end.y) {
+            String currLine = lines.get(r.start.y);
+            return currLine.substring(r.start.x, r.end.x);
+        } else {
+            String currLine = "";
+            for (int i = r.start.y + 1; i < r.start.y; i++) {
+                currLine += lines.get(i);
+                currLine += "\n";
+            }
+            return lines.get(r.start.y).substring(r.start.x) + "\n"
+                    + currLine
+                    + lines.get(r.end.y).substring(0, r.end.x);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package hr.fer.ooup.texteditor;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -11,6 +12,7 @@ public class TextEditor extends JFrame implements KeyListener {
     private Boolean shiftPressed = false;
     private Location shiftStart = null;
     private Boolean shiftReleaseOnLast = false;
+    private Boolean ctrlPressed = true;
     private int lastPressed = 0;
 
     TextEditor(String title, TextEditorModel tem) {
@@ -26,6 +28,10 @@ public class TextEditor extends JFrame implements KeyListener {
 
         TextObserver txtObserver = new TextObserver(this);
         this.tem.setTxtObserver(txtObserver);
+
+        ClipboardStack clipboardStack = new ClipboardStack(this);
+        this.tem.setClipboardStack(clipboardStack);
+        this.tem.getClipboardStack().updateClipboard();
     }
 
     @Override
@@ -42,6 +48,9 @@ public class TextEditor extends JFrame implements KeyListener {
             case KeyEvent.VK_SHIFT:
                 shiftPressed = true;
                 shiftStart = new Location(tem.getCursorLocation());
+                break;
+            case KeyEvent.VK_CONTROL:
+                ctrlPressed = true;
                 break;
             case KeyEvent.VK_UP:
                 lastPressed = keyPressed;
@@ -85,14 +94,38 @@ public class TextEditor extends JFrame implements KeyListener {
                 tem.insert(format);
                 break;
             default:
-                if (shiftReleaseOnLast) {
+                LocationRange lr = tem.getLatestSelectionRange();
+                if (ctrlPressed) {
+                    ClipboardStack clipboardStack = tem.getClipboardStack();
+                    ctrlPressed = false;
+                    if (keyPressed == KeyEvent.VK_C) {
+                        clipboardStack.push(tem.getClipboardString(lr));
+                        clipboardStack.updateClipboard();
+                    } else if (keyPressed == KeyEvent.VK_V) {
+                        tem.insert(tem.getClipboardStack().peek());
+                        clipboardStack.updateClipboard();
+                    } else if (keyPressed == KeyEvent.VK_X) {
+                        clipboardStack.push(tem.getClipboardString(lr));
+                        tem.deleteRange(tem.getLatestSelectionRange());
+                        clipboardStack.updateClipboard();
+                    }
+                } else if (shiftPressed) {
+                    if (ctrlPressed) {
+                        ctrlPressed = false;
+                        if (keyPressed == KeyEvent.VK_X) {
+                            tem.insert(tem.getClipboardStack().pop());
+                            tem.getClipboardStack().updateClipboard();
+                        }
+                    }
+                }  else if(!shiftReleaseOnLast) {
                     tem.deleteRange(tem.getLatestSelectionRange());
-                }
-                if (keyPressed >= KeyEvent.VK_SPACE && keyPressed < KeyEvent.VK_DELETE) {
-                    lastPressed = keyPressed;
-                    shiftPressed = false;
-                    tem.setSelectionRange(null);
-                    tem.insert(keyEvent.getKeyChar());
+                } else {
+                    if (keyPressed >= KeyEvent.VK_SPACE && keyPressed < KeyEvent.VK_DELETE) {
+                        lastPressed = keyPressed;
+                        shiftPressed = false;
+                        tem.setSelectionRange(null);
+                        tem.insert(keyEvent.getKeyChar());
+                    }
                 }
                 break;
         }
@@ -118,7 +151,6 @@ public class TextEditor extends JFrame implements KeyListener {
                 tem.setSelectionRange(null);
             }
         }
-
 
     }
 }

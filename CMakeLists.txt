@@ -16,6 +16,5 @@ add_subdirectory(lab2/lab2_5)
 
 add_subdirectory(lab3/lab3_1_1)
 add_subdirectory(lab3/lab3_1_3)
-add_subdirectory(lab3/lab3_2)
 add_subdirectory(lab3/lab3_3)
 add_subdirectory(lab3/lab3_4)
