@@ -2,16 +2,15 @@ package hr.fer.ooup.texteditor;
 
 public class CursorObserver implements ICursorObserver {
 
-    private TextEditorModel tem;
+    private TextEditor te;
 
-    public CursorObserver(TextEditorModel tem) {
-        this.tem = tem;
+    public CursorObserver(TextEditor tem) {
+        this.te = tem;
     }
 
     @Override
-    public void updateCursorLocation(Location loc) {
-        System.out.println(loc);
-        this.tem.setCursorLocation(loc);
+    public void updateCursorLocation() {
+        this.te.repaint();
     }
 
 }

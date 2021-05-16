@@ -9,11 +9,13 @@ public class Location {
         this.y = y;
     }
 
+    Location(Location l) {
+        this.x = l.x;
+        this.y = l.y;
+    }
+
     @Override
     public String toString() {
-        return "Location{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return String.format("Location{x=%s, y=%s}", x, y);
     }
 }
