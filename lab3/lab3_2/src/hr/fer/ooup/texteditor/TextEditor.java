@@ -1,6 +1,5 @@
 package hr.fer.ooup.texteditor;
 
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

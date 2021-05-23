@@ -6,8 +6,8 @@ public class ClipboardStack implements IClipboardStack {
     private Stack<String> stack;
     private TextEditor te;
 
-    public ClipboardStack(TextEditor tem) {
-        this.te = tem;
+    public ClipboardStack(TextEditor te) {
+        this.te = te;
         this.stack = new Stack<String>();
     }
 
