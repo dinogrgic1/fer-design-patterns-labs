@@ -7,26 +7,23 @@ public class Rectangle {
     private int height;
 
     public Rectangle(int x, int y, int width, int height) {
-        // ...
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     };
 
-    public int getX() {
-        // ...
-        return 0;
-    }
+    public int getX() { return this.x; }
 
     public int getY() {
-        // ...
-        return 0;
+        return this.y;
     }
 
     public int getWidth() {
-        // ...
-        return 0;
+        return this.width;
     }
 
     public int getHeight() {
-        // ...
-        return 0;
+        return this.height;
     }
 }

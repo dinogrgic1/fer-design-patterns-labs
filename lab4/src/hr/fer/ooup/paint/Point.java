@@ -1,7 +1,5 @@
 package hr.fer.ooup.paint;
 
-import jdk.jshell.spi.ExecutionControl;
-
 public class Point {
 
     private int x;
@@ -16,12 +14,10 @@ public class Point {
     public int getY() { return this.y; }
 
     public Point translate(Point dp) {
-        // vraća NOVU točku translatiranu za argument tj. THIS+DP...
-        return null;
+        return new Point(this.x + dp.x, this.y + dp.y);
     }
 
     public Point difference(Point p) {
-        // vraća NOVU točku koja predstavlja razliku THIS-P...
-        return null;
+        return new Point(this.x - p.x, this.y - p.y);
     }
 }

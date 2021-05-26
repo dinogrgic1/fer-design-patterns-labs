@@ -1,6 +1,5 @@
 package hr.fer.ooup.paint;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +15,7 @@ abstract public class AbstractGraphicalObject implements IGraphicalObject{
     protected AbstractGraphicalObject(Point[] points) {
         this.hotPoints = points;
         this.selected = false;
+        this.hotPointSelected = new boolean[hotPoints.length];
         Arrays.fill(this.hotPointSelected, Boolean.FALSE);
     }
 
@@ -56,15 +56,10 @@ abstract public class AbstractGraphicalObject implements IGraphicalObject{
     }
 
     @Override
-    public Rectangle getBoundingBox() {
-        return null;
-    }
+    abstract public Rectangle getBoundingBox();
 
     @Override
-    public double selectionDistance(Point mousePoint) {
-        return 0;
-    }
-
+    abstract public double selectionDistance(Point mousePoint);
     @Override
     public void addGraphicalObjectListener(IGraphicalObjectListener l) {
         listeners.add(l);
@@ -76,14 +71,10 @@ abstract public class AbstractGraphicalObject implements IGraphicalObject{
     }
 
     @Override
-    public String getShapeName() {
-        return null;
-    }
+    abstract public String getShapeName();
 
     @Override
-    public IGraphicalObject duplicate() {
-        return null;
-    }
+    abstract public IGraphicalObject duplicate();
 
     @Override
     public void load(Stack<IGraphicalObject> stack, String data) {

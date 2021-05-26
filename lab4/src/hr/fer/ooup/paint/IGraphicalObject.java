@@ -1,7 +1,5 @@
 package hr.fer.ooup.paint;
 
-import javax.swing.*;
-import java.util.List;
 import java.util.Stack;
 
 public interface IGraphicalObject {
