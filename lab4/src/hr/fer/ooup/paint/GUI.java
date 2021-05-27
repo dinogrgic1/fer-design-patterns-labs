@@ -6,11 +6,15 @@ import java.util.ArrayList;
 
 public class GUI extends JFrame {
 
-    DocumentModel dm;
+    private DocumentModel dm;
+    private PaintCanvas paintCanvas;
 
     public GUI(ArrayList<IGraphicalObject> objects) {
         super("Paint");
+
         this.dm = new DocumentModel(objects);
+        this.paintCanvas = new PaintCanvas(this.dm);
+
         this.setSize(900, 900);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -36,7 +40,7 @@ public class GUI extends JFrame {
 
         JPanel jp = new JPanel(new BorderLayout());
         jp.add(jbt, BorderLayout.PAGE_START);
-        jp.add(new Canvas(), BorderLayout.CENTER);
+        jp.add(this.paintCanvas, BorderLayout.CENTER);
         this.add(jp);
     }
 }

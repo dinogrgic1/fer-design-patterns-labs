@@ -20,7 +20,7 @@ public interface IGraphicalObject {
     double selectionDistance(Point mousePoint);
 
     // Podrška za crtanje (dio mosta)
-    // void render(Renderer r);
+    void render(IRenderer r);
 
     // Observer za dojavu promjena modelu
     public void addGraphicalObjectListener(IGraphicalObjectListener l);

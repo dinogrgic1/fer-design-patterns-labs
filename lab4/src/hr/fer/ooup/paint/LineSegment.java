@@ -28,6 +28,11 @@ public class LineSegment extends AbstractGraphicalObject{
     }
 
     @Override
+    public void render(IRenderer r) {
+        r.drawLine(this.start, this.end);
+    }
+
+    @Override
     public String getShapeName() {
         return "Linija";
     }
