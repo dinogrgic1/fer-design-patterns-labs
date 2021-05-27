@@ -1,4 +1,6 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.render;
+
+import hr.fer.ooup.paint.geometry.Point;
 
 public interface IRenderer {
     void drawLine(Point s, Point e);

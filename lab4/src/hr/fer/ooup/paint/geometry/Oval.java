@@ -1,18 +1,22 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.geometry;
 
-public class Oval extends AbstractGraphicalObject{
+import hr.fer.ooup.paint.render.AbstractGraphicalObject;
+import hr.fer.ooup.paint.render.IGraphicalObject;
+import hr.fer.ooup.paint.render.IRenderer;
+
+public class Oval extends AbstractGraphicalObject {
 
     private Point center;
     private double A;
     private double B;
 
-    protected Oval() {
+    public Oval() {
         super(new Point[]{new Point(10, 0), new Point(0, 10)});
         this.center = new Point(5, 5);
         this.A = this.B = 10;
     }
 
-    protected Oval(Point right, Point down) {
+    public Oval(Point right, Point down) {
         super(new Point[] {right, down});
         this.center = new Point(down.getX(), right.getY());
         this.B = Math.abs(down.getY() - this.center.getY());

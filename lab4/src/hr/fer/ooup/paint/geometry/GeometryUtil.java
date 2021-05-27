@@ -1,4 +1,4 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.geometry;
 
 public class GeometryUtil {
     public static double distanceFromPoint(Point point1, Point point2) {

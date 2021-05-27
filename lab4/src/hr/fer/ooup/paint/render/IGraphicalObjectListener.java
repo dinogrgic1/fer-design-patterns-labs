@@ -1,4 +1,4 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.render;
 
 public interface IGraphicalObjectListener {
     // Poziva se kad se nad objektom promjeni bio što...

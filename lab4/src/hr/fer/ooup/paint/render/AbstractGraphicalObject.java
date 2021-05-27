@@ -1,4 +1,8 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.render;
+
+import hr.fer.ooup.paint.geometry.GeometryUtil;
+import hr.fer.ooup.paint.geometry.Point;
+import hr.fer.ooup.paint.geometry.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +56,9 @@ abstract public class AbstractGraphicalObject implements IGraphicalObject{
 
     @Override
     public void translate(Point delta) {
-        delta.translate(delta);
+        for(Point p : hotPoints) {
+            p.translate(delta);
+        }
     }
 
     @Override

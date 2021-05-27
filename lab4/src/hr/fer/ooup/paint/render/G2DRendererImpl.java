@@ -1,4 +1,6 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.render;
+
+import hr.fer.ooup.paint.geometry.Point;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -13,14 +15,14 @@ public class G2DRendererImpl implements IRenderer  {
     }
 
     @Override
-    public void drawLine(Point s, Point e) {
+    public void drawLine(hr.fer.ooup.paint.geometry.Point s, hr.fer.ooup.paint.geometry.Point e) {
         this.g2d.setColor(Color.blue);
         this.g2d.draw(new Line2D.Double(s.getX(), s.getY(), e.getX(), e.getY()));
     }
 
     @Override
-    public void fillPolygon(Point[] points) {
-        int[] xValue =  Arrays.stream(points).mapToInt(Point::getX).toArray();
+    public void fillPolygon(hr.fer.ooup.paint.geometry.Point[] points) {
+        int[] xValue =  Arrays.stream(points).mapToInt(hr.fer.ooup.paint.geometry.Point::getX).toArray();
         int[] yValue = Arrays.stream(points).mapToInt(Point::getY).toArray();
 
         this.g2d.setColor(Color.red);

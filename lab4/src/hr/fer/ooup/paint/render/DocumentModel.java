@@ -1,4 +1,7 @@
-package hr.fer.ooup.paint;
+package hr.fer.ooup.paint.render;
+
+import hr.fer.ooup.paint.geometry.GeometryUtil;
+import hr.fer.ooup.paint.geometry.Point;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +25,6 @@ public class DocumentModel {
 
         @Override
         public void graphicalObjectSelectionChanged(IGraphicalObject go) {
-
         }
     };
 
@@ -126,6 +128,11 @@ public class DocumentModel {
      * @param go GraphicalObject za switch.
      */
     public void increaseZ(IGraphicalObject go) {
+        // Sanity.
+        if(go == null) {
+            return;
+        }
+
         int idx = this.objects.indexOf(go);
         if(idx == -1 || idx == this.objects.size() - 1) {
             return;
@@ -138,6 +145,11 @@ public class DocumentModel {
      * @param go GraphicalObject za switch.
      */
     public void decreaseZ(IGraphicalObject go) {
+        // Sanity.
+        if(go == null) {
+            return;
+        }
+
         int idx = this.objects.indexOf(go);
         if(idx < 1) {
             return;
@@ -154,6 +166,16 @@ public class DocumentModel {
      * @return
      */
     public IGraphicalObject findSelectedGraphicalObject(Point mousePoint) {
+        // Sanity.
+        if(mousePoint == null) {
+            return null;
+        }
+
+        for(IGraphicalObject o : this.roObjects) {
+            if(findSelectedHotPoint(o, mousePoint) != -1) {
+                return o;
+            }
+        }
         return null;
     }
 
@@ -168,6 +190,16 @@ public class DocumentModel {
      * @return
      */
     public int findSelectedHotPoint(IGraphicalObject object, Point mousePoint) {
-        return 0;
+        if(object == null) {
+            return -1;
+        }
+
+        for(int i = 0 ; i < object.getNumberOfHotPoints(); i++) {
+            Point hotPoint = object.getHotPoint(i);
+            if(GeometryUtil.distanceFromPoint(mousePoint, hotPoint) < SELECTION_PROXIMITY) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
